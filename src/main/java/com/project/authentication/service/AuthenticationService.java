@@ -1,6 +1,6 @@
-package com.project.autenticator.service;
+package com.project.authentication.service;
 
-import com.project.autenticator.model.User;
+import com.project.authentication.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AutenticacaoService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private UserService userService;

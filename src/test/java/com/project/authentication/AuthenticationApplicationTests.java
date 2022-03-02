@@ -1,10 +1,10 @@
-package com.project.autenticator;
+package com.project.authentication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AutenticatorApplicationTests {
+class AuthenticationApplicationTests {
 
 	@Test
 	void contextLoads() {

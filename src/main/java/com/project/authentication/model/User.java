@@ -1,15 +1,14 @@
-package com.project.autenticator.model;
+package com.project.authentication.model;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -24,22 +23,23 @@ public class User implements UserDetails {
     @NotEmpty @Email @Column(unique = true)
     private String email;
 
-    @CPF
+    @NotEmpty @CPF @Column(unique = true)
     private String identityNumber;
 
     @NotEmpty
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Role> roles = new ArrayList<Role>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User(){}
 
-    public User(String full_name, String email, String profession, String identityNumber, String password) {
+    public User(String full_name, String email, String identityNumber, String password, Role role) {
         this.full_name = full_name;
         this.email = email;
         this.identityNumber = identityNumber;
         this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -60,7 +60,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return list;
     }
 
     @Override

@@ -1,7 +1,7 @@
-package com.project.autenticator.service;
+package com.project.authentication.service;
 
-import com.project.autenticator.model.User;
-import com.project.autenticator.repository.UserRepository;
+import com.project.authentication.model.User;
+import com.project.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

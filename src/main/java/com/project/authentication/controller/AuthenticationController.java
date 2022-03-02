@@ -1,7 +1,8 @@
-package com.project.autenticator.controller;
+package com.project.authentication.controller;
 
-import com.project.autenticator.model.request.AutenticacaoRequest;
-import com.project.autenticator.model.response.AutenticacaoResponse;
+import com.project.authentication.model.request.AuthenticationRequest;
+import com.project.authentication.model.response.AuthenticationResponse;
+import com.project.authentication.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,25 +16,24 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-public class AutenticacaoController {
+public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public AutenticacaoResponse autenticar(@RequestBody @Valid AutenticacaoRequest autenticacaoRequest){
-        UsernamePasswordAuthenticationToken loginData = autenticacaoRequest.toUsernamePasswordToken();
-
+    public ResponseEntity<AuthenticationResponse> autenticar(@RequestBody @Valid AuthenticationRequest authenticationRequest) throws AuthenticationException{
+        UsernamePasswordAuthenticationToken loginData = authenticationRequest.toUsernamePasswordToken();
         try {
             Authentication authentication = authenticationManager.authenticate(loginData);
             String token = tokenService.generateToken(authentication);
-
+            return ResponseEntity.ok(new AuthenticationResponse(token, "Bearer"));
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().build();
         }
-
-
-
     }
 }
