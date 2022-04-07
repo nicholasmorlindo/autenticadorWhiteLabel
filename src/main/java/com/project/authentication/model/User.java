@@ -29,17 +29,17 @@ public class User implements UserDetails {
     @NotEmpty
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     public User(){}
 
-    public User(String full_name, String email, String identityNumber, String password, Role role) {
+    public User(String full_name, String email, String identityNumber, String password, List<Role> role) {
         this.full_name = full_name;
         this.email = email;
         this.identityNumber = identityNumber;
         this.password = password;
-        this.role = role;
+        this.roles = role;
     }
 
     public Long getId() {
@@ -61,7 +61,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority("ROLE_" + role));
+
+        for(Role item : roles){
+            list.add(new SimpleGrantedAuthority("ROLE_" + item.getName()));
+        }
         return list;
     }
 

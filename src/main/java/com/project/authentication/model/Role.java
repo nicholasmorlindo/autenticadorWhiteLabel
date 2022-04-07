@@ -3,16 +3,22 @@ package com.project.authentication.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
+@Entity
 @Table(name = "roles")
-public enum Role implements GrantedAuthority {
+public class Role{
 
-    ADMIN,
-    DENTISTA;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public String getAuthority() {
-        return name();
+    private String name;
+
+    @ManyToMany
+    private List<Endpoint> endpoints;
+
+    public String getName() {
+        return name;
     }
-
 }
